@@ -2,5 +2,6 @@
 
 ```sh
 Current:
-Devuan Beowulf - aarch64/armel
+Debian Buster     # aarch64/armel
+Devuan Beowulf    # aarch64/armel
 ```
