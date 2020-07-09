@@ -23,7 +23,7 @@ apt -y clean
 apt -y autoclean
 apt update
 apt upgrade -y
-apt install -y ${PKGS1} ${DEB2} ${FIRMWARE}
+apt install -y ${PKGS1} ${DEV2} ${FIRMWARE}
 apt -y clean
 apt -y autoclean
 

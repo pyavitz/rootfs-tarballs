@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-source /root/ubuntu-source.txt
+source /root/source.txt
 
 set -o errexit
 set -o pipefail
@@ -25,7 +25,7 @@ echo 'y' | unminimize
 apt -y clean
 apt -y autoclean
 apt update
-apt install -y ${PKGS1} ${PKGS2}
+apt install -y ${PKGS1} ${UBU2}
 apt -y clean
 apt -y autoclean
 

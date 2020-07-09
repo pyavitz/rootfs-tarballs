@@ -2,11 +2,11 @@
 #AARCH64 ROOTFS
 source lib/source.txt
 
-FILE=ubuntu-base-${UBUNTU_VERSION}-base-arm64.tar.gz
+FILE=devuan-${DEVUAN_VERSION}-rootfs-aarch64.tar.xz
 if ls $FILE &>/dev/null; then exit; 
 	else echo "";
 fi
-wget -cq --show-progress http://cdimage.ubuntu.com/ubuntu-base/releases/${UBUNTU_VERSION}/release/ubuntu-base-${UBUNTU_VERSION}-base-arm64.tar.gz
+wget -cq --show-progress https://github.com/pyavitz/rootfs-tarballs/releases/download/rootfs/devuan-${DEVUAN_VERSION}-rootfs-aarch64.tar.xz
 
 set -x
 RAM=0
@@ -16,7 +16,7 @@ IMAGE_FOLDER="img/"
 set -eux -o pipefail
 IMAGE_LINUX_LOADADDR="0x1080000"
 IMAGE_FILE_SUFFIX="$(date +%F)"
-IMAGE_FILE_NAME="ubuntu-base-${UBUNTU_VERSION}-base-arm64.img"
+IMAGE_FILE_NAME="devuan-${DEVUAN_VERSION}-rootfs-aarch64.img"
 if [ $RAM -ne 0 ]; then
 	IMAGE_FOLDER="ram/"
 fi
@@ -51,29 +51,36 @@ umount p1
 mount -o defaults,noatime "${IMAGE_LOOP_DEV_ROOTFS}" p1
 
 ### Rootfs
-tar xfz ubuntu-base-${UBUNTU_VERSION}-base-arm64.tar.gz -C p1/
-rm -f ubuntu-base-${UBUNTU_VERSION}-base-arm64.tar.gz
+tar -xf devuan-${DEVUAN_VERSION}-rootfs-aarch64.tar.xz -C p2/
 
-mkdir -p p1/etc/apt/apt.conf.d p1/etc/dpkg/dpkg.cfg.d
-echo "force-unsafe-io" > "p1/etc/dpkg/dpkg.cfg.d/dpkg-unsafe-io"
+mkdir -p p2/etc/apt/apt.conf.d p2/etc/dpkg/dpkg.cfg.d
+echo "force-unsafe-io" > "p2/etc/dpkg/dpkg.cfg.d/dpkg-unsafe-io"
 
-mkdir -p p1/usr/bin
-cp $(which "qemu-aarch64-static") p1/usr/bin
+mkdir -p p2/usr/bin
+cp $(which "qemu-aarch64-static") p2/usr/bin
+
+tee p2/etc/apt/sources.list <<EOF
+deb http://deb.devuan.org/merged ${DEVUAN_VERSION} main contrib non-free
+deb http://deb.devuan.org/merged ${DEVUAN_VERSION}-updates main contrib non-free
+deb http://deb.devuan.org/merged ${DEVUAN_VERSION}-security main contrib non-free
+deb http://deb.devuan.org/merged ${DEVUAN_VERSION}-backports main contrib non-free
+EOF
 
 if [ -n "$PROXY" ] ; then
-	tee "p1/etc/apt/apt.conf.d/30proxy" <<EOF
+	tee "p2/etc/apt/apt.conf.d/30proxy" <<EOF
 Acquire::http::proxy "http://127.0.0.1:3142";
 EOF
 fi
 
-# setup stage2
-cp scripts/ubuntu-stage2 p1/root
+
+# setup devuan-stage2
+cp scripts/devuan-stage2 p1/root
 cp lib/source.txt p1/root
 
 # mount and chroot
 mount -o bind /dev p1/dev
 mount -o bind /dev/pts p1/dev/pts
-chroot p1 /root/ubuntu-stage2
+chroot p1 /root/devuan-stage2
 
 # unmount
 umount p1/dev/pts
@@ -81,9 +88,9 @@ umount p1/dev
 
 # clean
 rm p1/usr/bin/qemu-aarch64-static
-rm -f p1/usr/local/sbin/unminimize
-rm p1/root/ubuntu-stage2
+rm p1/root/devuan-stage2
 rm p1/root/source.txt
+rm p1/etc/apt/sources.list
 rm -f p1/var/cache/debconf/*
 
 if [ -n "$PROXY" ] ; then
@@ -95,7 +102,7 @@ rm p1/etc/dpkg/dpkg.cfg.d/dpkg-unsafe-io
 e4defrag -c p1
 
 cd p1
-tar cfJ ../ubuntu-base-${UBUNTU_VERSION}-base-arm64.tar.gz *
+tar cfJ ../devuan-${DEVUAN_VERSION}-rootfs-aarch64.tar.xz *
 cd ..
 
 umount p1
@@ -107,4 +114,4 @@ if [ $RAM -ne 0 ]; then
 fi
 rmdir "${IMAGE_FOLDER}"
 rmdir p1
-rm -f ubuntu-base-${UBUNTU_VERSION}-base-arm64.img
+rm -f devuan-${DEVUAN_VERSION}-rootfs-aarch64.img
