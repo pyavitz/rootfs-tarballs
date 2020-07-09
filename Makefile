@@ -26,6 +26,7 @@ help:
 	@echo "  make aarch64           Create aarch64 root filesystem"
 	@echo "  make armhf             Create aarch64 root filesystem"
 	@echo "  make armel             Create armel root filesystem"
+	@echo "  make ubuntu            Respin Ubuntu 20.04 filesystem"
 	@echo "  make cleanup           Clean up image errors"
 	@echo
 	@echo "For details consult the README.md"
