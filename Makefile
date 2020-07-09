@@ -7,6 +7,10 @@ RFSV6=./scripts/armel
 ROOTFSV6=sudo ./scripts/armel
 RFS2=./scripts/stage2
 
+UB1=./scripts/ubuntu
+UB=sudo ./scripts/ubuntu
+UB2=./scripts/ubuntu-stage2
+
 # clean
 CLN=./scripts/clean
 CLEAN=sudo ./scripts/clean
@@ -52,6 +56,12 @@ armel:
 	@chmod +x ${RFSV6}
 	@chmod +x ${RFS2}
 	@${ROOTFSV6}
+
+ubuntu:
+	# ARM64 UBUNTU ROOTFS
+	@chmod +x ${UB1}
+	@chmod +x ${UB2}
+	@${UB}
 
 # clean and purge
 cleanup:
