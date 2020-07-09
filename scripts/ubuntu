@@ -2,10 +2,6 @@
 #AARCH64 ROOTFS
 source lib/source.txt
 
-FILE=ubuntu-base-${UBUNTU_VERSION}-base-arm64.tar.gz
-if ls $FILE &>/dev/null; then exit; 
-	else echo "";
-fi
 wget -cq --show-progress http://cdimage.ubuntu.com/ubuntu-base/releases/${UBUNTU_VERSION}/release/ubuntu-base-${UBUNTU_VERSION}-base-arm64.tar.gz
 
 set -x
