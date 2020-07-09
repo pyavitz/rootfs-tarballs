@@ -81,6 +81,7 @@ umount p1/dev
 
 # clean
 rm p1/usr/bin/qemu-aarch64-static
+rm -f p1/usr/local/sbin/unminimize
 rm p1/root/ubuntu-stage2
 rm p1/root/ubuntu-source.txt
 rm -f p1/var/cache/debconf/*
