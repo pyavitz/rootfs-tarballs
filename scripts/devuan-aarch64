@@ -48,6 +48,7 @@ mount -o defaults,noatime "${IMAGE_LOOP_DEV_ROOTFS}" p1
 
 ### Rootfs
 tar -xf devuan-${DEVUAN_VERSION}-rootfs-aarch64.tar.xz -C p1/
+rm -f devuan-${DEVUAN_VERSION}-rootfs-aarch64.tar.xz
 
 mkdir -p p1/etc/apt/apt.conf.d p1/etc/dpkg/dpkg.cfg.d
 echo "force-unsafe-io" > "p1/etc/dpkg/dpkg.cfg.d/dpkg-unsafe-io"
