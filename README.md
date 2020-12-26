@@ -1,4 +1,4 @@
-## Debian Buster / Devuan Beowulf / Ubuntu 20.04
+## Debian Buster / Devuan Beowulf / Ubuntu 20.04.1
 
 #### Usage
 ```sh
