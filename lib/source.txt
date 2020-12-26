@@ -3,7 +3,7 @@
 # stage1
 DEBIAN_VERSION="buster"
 DEVUAN_VERSION="beowulf"
-UBUNTU_VERSION="20.04"
+UBUNTU_VERSION="20.04.1"
 
 # stage2
 PKGS1="tzdata keyboard-configuration sudo man-db dbus initramfs-tools \
