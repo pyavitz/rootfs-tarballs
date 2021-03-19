@@ -1,6 +1,0 @@
-#!/bin/bash
-umount p1/proc p1/sys p1/dev p1/run
-umount -l p1
-rm -fr p1 img
-losetup -d /dev/loop* > /dev/null 2>&1
-echo Done.
